@@ -273,4 +273,21 @@ public void _testWithReallyBigFile() {
   assertTrue(bytesSent > 1000000000);
 }
 ```
+#### Comentários TODO
 
+Às vezes, é razoável deixar notas de 'Para fazer' na forma de comentários //TODO. 
+No caso a seguir, o comentário TODO explica por que a função tem uma implementação degenerada e qual deve ser o futuro dessa função.
+
+```java
+/**
+     * Checks if the given string is a palindrome.
+     * The current implementation always returns false, which is not correct.
+     *
+     * TODO: Implement the logic to properly check for palindromes.
+     * Consider handling case sensitivity and ignoring spaces and punctuation.
+     */
+    public boolean isPalindrome(String str) {
+        // Degenerate implementation; always returns false
+        return false; // Placeholder return value
+    }
+```
