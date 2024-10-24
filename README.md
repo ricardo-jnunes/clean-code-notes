@@ -154,3 +154,123 @@ locations.forEach((location) => {
   dispatch(location);
 });
 ```
+
+
+### Funções
+
+#### Mantenha-as pequenas!
+A primeira regra das funções é que elas devem ser pequenas.
+
+>Funções devem fazer uma única coisa. Devem fazer isso bem. Devem fazer somente isso.
+
+#### Use Nomes Descritivos
+Você sabe que está trabalhando com código limpo quando cada rotina faz exatamente o que você esperava.
+
+Quanto menor e mais focada for a função, mais fácil será escolher um nome descritivo.
+
+Não tenha medo de dar um nome longo. Um nome descritivo longo é melhor do que um nome curto e enigmático. Um nome descritivo longo é melhor do que um longo comentário descritivo. Use uma convenção de nomenclatura que permita a leitura fácil de várias palavras nos nomes das funções e, em seguida, utilize essas palavras para dar à função um nome que diga exatamente o que ela faz.
+
+**Ruim:**
+```java
+public class Order {
+    public void procOrd(Order o, double t) {
+        if (o != null) {
+            if (t > 100) {
+                System.out.println("Order with discount");
+                o.total -= 10;
+            }
+        }
+    }
+}
+```
+
+**Bom:**
+```java
+public class Order {
+    public void processOrderWithDiscount(Order order, double total) {
+        if (isOrderValid(order)) {
+            if (isTotalEligibleForDiscount(total)) {
+                applyDiscount(order);
+            }
+        }
+    }
+
+    private boolean isOrderValid(Order order) {
+        return order != null;
+    }
+
+    private boolean isTotalEligibleForDiscount(double total) {
+        return total > 100;
+    }
+
+    private void applyDiscount(Order order) {
+        System.out.println("Order with discount");
+        order.total -= 10;
+    }
+}
+```
+
+**[⬆ voltar ao topo](#Clean Code Notes)**
+
+### Comentários
+#### Comentários Não Compensam Código Ruim
+
+**Ruim:**
+```java
+// Check to see if the employee is eligible for full benefits
+if ((employee.flags & HOURLY_FLAG) && (employee.age > 65))
+```
+**Bom:**
+```java
+if (employee.isEligibleForFullBenefits())
+```
+
+#### Não deixe código comentado na sua base de código
+Controle de versão existe por uma razão. Deixar códigos velhos no seu histórico.
+
+**Ruim:**
+```javascript
+doStuff();
+// doOtherStuff();
+// doSomeMoreStuff();
+// doSoMuchStuff();
+```
+
+**Bom:**
+```javascript
+doStuff();
+```
+### Bons comentários
+Alguns comentários são bons e essenciais.
+
+#### Comentários Legais
+Às vezes, nossos padrões de codificação corporativos nos obrigam a escrever certos comentários por razões legais. Por exemplo, declarações de copyright e de autoria são necessárias e razoáveis para serem incluídas em um comentário no início de cada arquivo de código-fonte.
+> The MIT License (MIT)
+> Copyright (c) 2024 
+> Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software")
+
+#### Comentários Informativos
+Às vezes, é útil fornecer informações básicas por meio de um comentário.
+
+```java
+// Returns an instance of the Responder being tested.
+protected abstract Responder responderInstance();
+```
+
+#### Aviso sobre Consequências
+Às vezes, é útil alertar outros programadores sobre certas consequências.
+
+```java
+// Don't run unless you
+// have some time to kill.
+public void _testWithReallyBigFile() {
+  writeLinesToFile(10000000);
+  response.setBody(testFile);
+  response.readyToSend(this);
+  String responseString = output.toString();
+  assertSubString("Content-Length: 1000000000", responseString);
+  assertTrue(bytesSent > 1000000000);
+}
+```
+
