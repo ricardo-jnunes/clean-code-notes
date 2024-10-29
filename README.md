@@ -156,7 +156,7 @@ locations.forEach((location) => {
 ```
 
 
-### Funções
+## Funções
 
 #### Mantenha-as pequenas!
 A primeira regra das funções é que elas devem ser pequenas.
@@ -297,7 +297,7 @@ Todo programador tem suas regras suas formas de formatação prediletas, mas se 
 Uma equipe de desenvoldedores deve escolher um único estilo e então todos da equipe devem usá-lo.
 Não queremos que pensem que o código foi escrito por pessoas em desacordo.
 
-#### Objetos e Estruturas de Dados
+## Objetos e Estruturas de Dados
 
 Há um motivo para declararmos nossas variáveis privadas. Não queremos que ninguém dependa delas.
 
@@ -428,8 +428,7 @@ public class UserDTO {
 
 ```
 
-### Tratamento de Erro
-
+## Tratamento de Erro
 
 #### Tratamento Básico de Exceções com try-catch
 
@@ -518,7 +517,7 @@ public int findIndex(int[] arr, int value) {
 
 ```
 
-### Limites
+## Limites
 
 O que acontece quando não controlamos todos os sistemas? De vez em quando nos deparamos com pacotes de software de outro fabricante, ou dependemos de uma biblioteca de código livre ou ainda, são de outras equipes da nossa própria empresa.
 
