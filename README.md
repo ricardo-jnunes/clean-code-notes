@@ -517,3 +517,72 @@ public int findIndex(int[] arr, int value) {
 }
 
 ```
+
+### Limites
+
+O que acontece quando não controlamos todos os sistemas? De vez em quando nos deparamos com pacotes de software de outro fabricante, ou dependemos de uma biblioteca de código livre ou ainda, são de outras equipes da nossa própria empresa.
+
+As vezes podemos despender um dia ou dois, ou até mais lendo a documentação e decidindo como usá-la. Então escreveríamos um código para usar o código externo e vemos se ele é ou não o que achávamos que fosse.
+
+Então ao invés de tentar escrever algo com o código novo, poderíamos escrever tester para explorar o conhecimento. Jim Newkirk chama isso de testes de aprendizagem no livro Beck TDD, pp. 136-137.
+
+É um modo de ver a metododolofia TDD (Test Driven Development) em ação, que em português significa Desenvolvimento Orientado a Testes.
+
+#### Lidando com Integrações Externas ou O uso de código que ainda não existe
+
+Se uma aplicação depende de uma API para processar pagamentos, criar um Mock que simule diferentes respostas da API é útil para desenvolver o fluxo de pagamento sem depender da API real.
+**Bom:**
+```java
+
+public class PaymentServiceFake implements PaymentService {
+    public PaymentResponse processPayment(PaymentRequest request) {
+        // Simula uma resposta de sucesso ou erro
+        return new PaymentResponse(true, "Pagamento simulado com sucesso");
+    }
+}
+
+```
+
+#### Lidando com Integrações Externas 
+
+Um adaptador para encapsular uma API de geolocalização poderia transformar a resposta da API em uma estrutura interna de dados, abstraindo qualquer detalhe específico da API.
+
+**Bom:**
+```java
+public class GeoLocationAdapter {
+    private ThirdPartyGeoService geoService;
+
+    public GeoLocationAdapter(ThirdPartyGeoService geoService) {
+        this.geoService = geoService;
+    }
+
+    public Location getLocation(String address) {
+        // Converte a resposta da API externa em uma estrutura interna
+        ExternalGeoResponse response = geoService.findLocation(address);
+        return new Location(response.getLatitude(), response.getLongitude());
+    }
+}
+
+```
+
+#### Assumir o Desconhecido
+
+**Bom:**
+```java
+public class WeatherService {
+    private ExternalWeatherApi api;
+
+    public WeatherService(ExternalWeatherApi api) {
+        this.api = api;
+    }
+
+    public String getWeather(String location) {
+        try {
+            return api.fetchWeather(location);
+        } catch (ExternalServiceException e) {
+            return "Serviço indisponível, tente novamente mais tarde."; // Fallback padrão
+        }
+    }
+}
+
+```
