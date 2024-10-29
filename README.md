@@ -291,3 +291,141 @@ No caso a seguir, o comentário TODO explica por que a função tem uma implemen
         return false; // Placeholder return value
     }
 ```
+
+#### Regras de Equipe
+
+Todo programador tem suas regras suas formas de formatação prediletas, mas se ele for trabalhar em equipe, as regras são delas.
+
+Uma equipe de desenvoldedores deve escolher um único estilo e então todos da equipe devem usá-lo.
+Não queremos que pensem que o código foi escrito por pessoas em desacordo.
+
+#### Objetos e Estruturas de Dados
+
+Há um motivo para declararmos nossas variáveis privadas. Não queremos que ninguém dependa delas.
+
+Objetos devem representar entidades específicas, ter responsabilidades claras e encapsular comportamento.
+
+**Ruim:**
+```java
+public class User {
+    public String name;
+    public String email;
+    public boolean isActive;
+
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.isActive = false;
+    }
+}
+
+// Manipulação direta dos dados
+User user = new User("Alice", "alice@example.com");
+user.isActive = true; // Mau uso, expõe detalhes internos
+
+```
+
+**Bom:**
+```java
+public class User {
+    private String name;
+    private String email;
+    private boolean isActive;
+
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.isActive = false;
+    }
+
+    public void activate() {
+        this.isActive = true;
+    }
+
+    public void deactivate() {
+        this.isActive = false;
+    }
+
+    public boolean isActive() {
+        return this.isActive;
+    }
+}
+
+```
+
+**Ruim:**
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserService {
+    private static Map<Integer, String> userDatabase = new HashMap<>();
+
+    public static void addUser(int id, String name) {
+        userDatabase.put(id, name);
+    }
+
+    public static void displayUser(int id) {
+        System.out.println("Usuário: " + userDatabase.get(id));
+    }
+}
+
+```
+
+**Bom:**
+```java
+//Aqui, displayUser recebe os dados explicitamente, mantendo o código mais claro e desacoplado da estrutura de dados.
+public class UserService {
+    public static void displayUser(int id, String name) {
+        System.out.println("Usuário: " + name);
+    }
+}
+
+// Uso
+UserService.displayUser(1, "Alice");
+
+```
+
+#### Lei de Demeter
+Há um heurística conhecida chamada [Lei de Demeter](https://en.wikipedia.org/wiki/Law_of_Demeter), um módulo não deve enxergar o interior dos objetos que ele manipula.
+
+#### Objeto de transferência de dados - DTO
+Estrtura de dados perfeita é uma classe com variáveis públicas e nehnhuma função.
+
+**Bom:**
+```java
+public class UserDTO {
+    private Long id;
+    private String name;
+    private String email;
+
+    public UserDTO() {
+    }
+
+    public UserDTO(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+}
+
+```
