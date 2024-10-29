@@ -210,8 +210,6 @@ public class Order {
 }
 ```
 
-**[⬆ voltar ao topo](#Clean Code Notes)**
-
 ### Comentários
 #### Comentários Não Compensam Código Ruim
 
@@ -425,6 +423,96 @@ public class UserDTO {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+}
+
+```
+
+### Tratamento de Erro
+
+
+#### Tratamento Básico de Exceções com try-catch
+
+**Ruim:**
+```java
+/// Evite capturar exceções genéricas (Exception ou Throwable), pois elas podem esconder erros que você não esperava.
+try {
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Divisão por zero não é permitida.");
+} catch (Exception e) {
+    System.out.println("Ocorreu um erro desconhecido."); // Evite isso sempre que possível
+}
+
+try {
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    // Evite Silenciar Exceções, evite blocos catch vazios. Prefira lançar uma exceção ou logar o erro.
+    e.printStackTrace(); // Imprime o stack trace no console, sem contexto adicional
+}
+
+```
+
+**Bom:**
+```java
+public class BasicExceptionHandling {
+    public static void main(String[] args) {
+        String input = "123a"; // Entrada inválida
+
+        try {
+            int number = Integer.parseInt(input); // Pode lançar NumberFormatException
+            System.out.println("Número: " + number);
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: A entrada não é um número válido.");
+        }
+    }
+}
+
+```
+
+#### Exceções Personalizadas
+
+**Bom:**
+```java
+// Exceção personalizada
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+
+public class CustomExceptionExample {
+    public static void main(String[] args) {
+        try {
+            validateAge(15); // Exemplo com idade inválida
+        } catch (InvalidAgeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void validateAge(int age) throws InvalidAgeException {
+        if (age < 18) {
+            throw new InvalidAgeException("Erro: Idade mínima é 18 anos.");
+        }
+        System.out.println("Idade válida.");
+    }
+}
+
+```
+
+#### Eviste oso de Exceções para Controle de Fluxo
+
+```java
+public int findIndex(int[] arr, int value) {
+    try {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == value) {
+                return i;
+            }
+        }
+        throw new Exception("Valor não encontrado"); // Usa exceção para controle de fluxo
+    } catch (Exception e) {
+        return -1; // Retorna -1 se o valor não for encontrado
     }
 }
 
